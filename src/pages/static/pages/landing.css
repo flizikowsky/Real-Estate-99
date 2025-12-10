@@ -1,0 +1,299 @@
+nav {
+    height: 50px;
+    background-color: #fff;
+    padding: 7px 50px;
+}
+nav .logo_box {
+    display: inline-block;
+    height: 100%;
+    float: left;
+    line-height: 240%;
+    text-transform: uppercase;
+}
+nav .default_btn {
+    -webkit-appearance: none;
+    display: inline-block;
+    float: right;
+    padding: 10px 30px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    background-color: rgb(53, 84, 209);
+    border-radius: 3px;
+    box-shadow: 0px 5px 10px 2px rgba(53, 84, 209, 0.5);
+    transition: 0.3s;
+}
+a {
+    text-decoration: none;
+}
+.default_btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 15px 1px rgba(53, 84, 209, 0.5);
+}
+.default_btn:active {
+    transform: translateY(2px);
+    box-shadow: 0px 3px 5px 0px rgba(53, 84, 209, 0.5);
+}
+header {
+    background-color: rgb(238, 241, 246);
+    height: 85vh;
+}
+.header_title {
+    width: 50%;
+    height: 92.5%;
+    float: left;
+    padding-left: 10%;
+    padding-top: 5%;
+    padding-right: 50px;
+}
+.header_title h1 {
+    font-size: 50px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    margin-top: 0;
+}
+.header_title p {
+    color: #333;
+    padding-right: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.8;
+}
+.header_title .button_box {
+    margin-top: 40px;
+}
+.header_title .button_box > * {
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.6s;
+}
+.header_title .button_box > *:nth-of-type(1) {
+    border: 1px solid rgb(53, 84, 209);
+    background-color: rgb(53, 84, 209);
+    color: #fff;
+    box-shadow: 0px 3px 10px 0px rgba(53, 84, 209, 0.45)
+}
+.header_title .button_box > *:nth-of-type(2) {
+    margin-left: 30px;
+}
+.header_title .button_box > *:hover {
+    transform: translateY(-3px);
+}
+.header_title .button_box > *:active {
+    transform: translateY(2px);
+}
+.header_title .button_box > *:nth-of-type(1):hover {
+    box-shadow: 0px 5px 15px 0px rgba(53, 84, 209, 0.45)
+}
+.header_title .button_box > *:nth-of-type(1):active {
+    box-shadow: 0px 3px 5px 0px rgba(53, 84, 209, 0.45)
+}
+.header_image {
+    width: 50%;
+    height: 91.5%;
+    float: left;
+    padding-left: 10%;
+    background-image: url(images/joel-filipe-RFDP7_80v5A-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+
+section {
+    text-align: center;
+}
+section h6 {
+    color: #888;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+section h2 {
+    font-size: 30px;
+    font-weight: 300;
+    margin-top: 10px;
+    line-height: 1.3;
+}
+.about_section article {
+    padding: 0 15%;
+    position: relative;
+    height: 70vh;
+}
+.about_section article .about_image {
+    width: 300px;
+    height: 400px;
+    float: left;
+    background-image: url(images/alexander-andrews-A3DPhhAL6Zg-unsplash.jpg);
+    background-size: cover;
+    background-position: bottom;
+    overflow: hidden;
+    position: absolute;
+}
+.about_section article div:nth-of-type(2) {
+    float: left;
+    width: calc(100% - 250px);
+    height: 340px;
+    background-color: rgb(211, 238, 255);
+    transform: translate(30%, 30%);
+    position: relative;
+    z-index: -1;
+    padding-left: 140px;
+    padding-right: 40px;
+    padding-top: 40px;
+    text-align: left;
+}
+.about_section article div:nth-of-type(2) h3 {
+    font-size: 25px;
+    font-weight: 400;
+}
+.about_section article div:nth-of-type(2) p {
+    color: #333;
+    line-height: 1.5;
+}
+
+
+.card_section {
+    background-color: rgb(238, 241, 246);
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.card_box {
+    height: 200px;
+    width: calc(33% - 20px * 2);
+    float: left;
+    margin: 20px 20px;
+    margin-top: 50px;
+    background-color: #fff;
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: left;
+    border-radius: 5px;
+}
+.card_box i {
+    background-color: rgb(211, 238, 255);
+    display: block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border-radius: 30px;
+}
+.card_box h4 {
+    font-size: 15px;
+    font-weight: 500;
+}
+.card_box p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #999;
+}
+
+
+.email_section {
+    padding-top: 10px;
+    height: 500px;
+}
+.email_section article > div:nth-of-type(1) {
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.email_section article > div:nth-of-type(1) h5 {
+    margin-top: 50px;
+    margin-bottom: 0;
+    width: 200px;
+    display: inline-block;
+    text-align: left;
+}
+.email_section article > div:nth-of-type(1) p {
+    width: 200px;
+    display: inline-block;
+    text-align: left;
+}
+.email_section article > div:nth-of-type(2) {
+    width: 50%;
+    float: left;
+}
+.email_section input {
+    -webkit-appearance: none;
+	margin-top: 5px;
+	display: inline-block;
+	width: 34%;
+	font-size: 14px;
+	padding: 6px;
+	border: 1px solid #bbb;
+	background-color: rgb(248, 251, 253);
+	border-radius: 4px;
+	box-sizing: border-box;
+	outline: none;
+	height: 30px;
+	transition: background 0.25s color 0.25s border 0.25s;
+	color: #808080;
+}
+.email_section input:active,
+.email_section input:focus {
+	background-color: #ffffff;
+	color: #666;
+	border-color: #999
+}
+.email_section input::placeholder {
+	color: #bbb;
+}
+.email_section textarea {
+    -webkit-appearance: none;
+	margin-top: 18px;
+	display: inline-block;
+	width: 71%;
+	font-size: 14px;
+    font-family: sans-serif;
+	padding: 6px;
+	border: 1px solid #bbb;
+	background-color: rgb(248, 251, 253);
+	border-radius: 4px;
+	box-sizing: border-box;
+	outline: none;
+	transition: background 0.25s color 0.25s border 0.25s;
+	color: #808080;
+    resize: none;
+}
+.email_section textarea:focus {
+	background-color: #ffffff;
+	color: #666;
+	border-color: #999
+}
+.email_section textarea::placeholder {
+	color: #bbb;
+}
+.email_section button {
+    -webkit-appearance: none;
+    display: inline-block;
+    padding: 10px 30px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    background-color: rgb(53, 84, 209);
+    border-radius: 3px;
+    box-shadow: 0px 5px 7px 0px rgba(53, 84, 209, 0.5);
+    transition: 0.3s;
+    margin-top: 30px;
+    float: left;
+    margin-left: 95px;
+    outline: none;
+}
+footer {
+    text-align: center;
+    color: #aaa;
+    font-weight: 600;
+    font-size: 14px;
+}

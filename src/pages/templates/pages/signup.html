@@ -1,0 +1,118 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'pages/auth.css' %}">
+	<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Barlow', sans-serif;
+			background-color: rgb(238, 241, 246);
+		}
+		
+		.default_btn {
+			-webkit-appearance: none;
+			display: inline-block;
+			padding: 10px 30px;
+			font-size: 12px;
+			font-weight: 600;
+			color: #fff;
+			border: none;
+			background-image: linear-gradient(to bottom right,
+				rgb(53, 153, 252),
+				rgb(37, 86, 221)
+			);
+			border-radius: 5px;
+			box-shadow: 0px 5px 10px 2px rgba(45, 124, 241, 0.6);
+			transition: 0.3s;
+			margin-top: 10px;
+			outline: none;
+		}
+		.default_btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0px 8px 15px 1px rgba(45, 124, 241, 0.6);
+		}
+		.default_btn:active {
+			transform: translateY(2px);
+			box-shadow: 0px 3px 5px 0px rgba(45, 124, 241, 0.6);
+		}
+		
+		.errorlist {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="auth_box">
+		<div>
+			<div class="logo">For Dewelopers</div>
+			<div class="auth_info">
+				<h1>Hello, Friend!</h1>
+				{% for message in messages %}
+					<h5>{{ message }}</h5>
+				{% endfor %}
+				<p>Please create an account in order to start using Estate Alg.</p>
+				{{ form.errors }}
+			</div>
+		</div>
+		<div>
+		   <p>Already heve an account? <a href="{% url 'login' %}">Log in</a></p>
+		   
+			<form method="POST" action=""> {% csrf_token %}
+				
+				<div class="form_item">
+					{{ form.email }}
+					<label for="">Email</label>
+				</div>
+				
+				<div class="form_item">
+					{{ form.password1 }}
+					<label for="">Password</label>
+				</div>
+				
+				<div class="form_item">
+					{{ form.password2 }}
+					<label for="">Confirm</label>
+				</div>
+				
+				<div class="errors">
+				</div>
+				
+				<button type="submit" class="default_btn">Sing Up</button>
+			</form>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		var form_filds = document.getElementsByTagName('input');
+		
+		form_filds[1].placeholder = 'Email'
+		form_filds[2].placeholder = 'Password'
+		form_filds[3].placeholder = 'Confirm'
+	</script>
+	<script type="text/javascript">
+		error_list = document.getElementsByClassName('errorlist')
+		error_value_list = error_list[0].getElementsByClassName('errorlist')
+		error_box = document.getElementsByClassName('errors')
+		
+		for (var i = 0; i < error_value_list.length; i++) {
+			error_li_list = error_value_list[i].getElementsByTagName('li')
+			for (var j = 0; j < error_li_list.length; j++) {
+				error_message = error_li_list[j].innerHTML
+				error_box[0].innerHTML += "<p>" + error_message + "</p>"
+			}
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<nav>
+	<div class="nav_base">
+		<div class="nav_box logo_box">
+			<a href="{% url 'landing_page' %}" style="color: rgb(2, 139, 210);">PG</a>
+		</div>
+		<div class="nav">
+			<div class="nav_box">
+				<a href="{% url 'users:users-home' %}">
+          <i class="icon-th-large"></i>
+          <p class="base_text_s">Desktop</p>
+        </a>
+			</div>
+			<div class="nav_box">
+				<a href="{% url 'properties:properties-list' %}">
+					<i class="icon-th-list"></i>
+					<p class="base_text_s">Brows</p>
+				</a>
+			</div>
+			{% if '/properties/' in request.path %}
+				<div class="nav_box" id="filters_tab">
+					<i class="icon-filter"></i>
+					<p class="base_text_s">Filters</p>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	{% if '/properties/' in request.path %}
+		<div class="nav_expand">
+			<h3>Filter Options</h3>
+			<p>Filter properties and get more accurate results</p>
+			
+			{% include 'properties/snippets/filter_form.html' %}
+		</div>
+	{% endif %}
+</nav>

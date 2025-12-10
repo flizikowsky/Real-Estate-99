@@ -1,0 +1,52 @@
+<form method="GET" class="filter_form">
+	<div class="form_item">
+		<label for="location">Location:</label><br>
+		<input type="text" id="location" name="l" value="{{ filters.location }}" placeholder="Location of your intrest">
+	</div>
+	
+	<div class="form_item">
+		<label class="small">Price:</label><br>
+		
+		<input type="number" id="min_price" class="my_input small" name="min_p" value="{{ filters.min_price }}" min="0" step="100" placeholder="Min Price">
+		<input type="number" id="max_price" class="my_input small" name="max_p" value="{{ filters.max_price }}" min="0" step="100" placeholder="Max Price">
+	</div>
+	
+	<div class="form_item">
+		<label class="small">Surface:</label><br>
+		
+		<input type="number" id="min_surface" class="my_input small" name="min_s" value="{{ filters.min_surface }}" min="0" step="10" placeholder="Min Surface">
+		<input type="number" id="max_surface" class="my_input small" name="max_s" value="{{ filters.max_surface }}" min="0" step="10" placeholder="Max Surface">
+	</div>
+	
+	<div class="form_item">
+		<label>Property Type:</label><br>
+		
+		<select name="t_p">
+			<option value="">---------</option>
+			{% for t_property in t_properties %}
+				{% if t_property == filters.t_property %}
+					<option value="{{ t_property }}" selected>{{ t_property }}</option>
+				{% else %}
+					<option value="{{ t_property }}">{{ t_property }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+	
+	<div class="form_item">
+		<label>Sell Type:</label><br>
+		
+		<select name="t_s">
+			<option value="">---------</option>
+			{% for t_sell in t_sells %}
+				{% if t_sell == filters.t_sell %}
+					<option value="{{ t_sell }}" selected>{{ t_sell }}</option>
+				{% else %}
+					<option value="{{ t_sell }}">{{ t_sell }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+	
+	<button type="submit" class="default_btn" style="float: right;">Apply Filters</button>
+</form>

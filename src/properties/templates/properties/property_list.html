@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'properties/properties.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'properties/more.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontello/css/fontello.css' %}">
+{% endblock %}
+	
+{% block content %}
+	<main class="main" style="position: relative;">
+		<header class="header">
+			<h1>{{ title }}</h1>
+			<p>{{ description }}</p>
+		</header>
+		{% if '/properties/' in request.path %}
+			<div class="sub_options">
+				<div class="options">
+					{% if picked_option == 'all' %}
+						<div class="picked_option">
+							<a href="{% url 'properties:properties-list' %}">All Properties</a>
+						</div>
+					{% else %}
+						<div>
+							<a href="{% url 'properties:properties-list' %}">All Properties</a>
+						</div>
+					{% endif %}
+					{% if picked_option == 'month' %}
+						<div class="picked_option">
+							<a href="{% url 'properties:properties-list-month' %}">Added This Month</a>
+						</div>
+					{% else %}
+						<div>
+							<a href="{% url 'properties:properties-list-month' %}">Added This Month</a>
+						</div>
+					{% endif %}
+					{% if picked_option == 'today' %}
+						<div class="picked_option">
+							<a href="{% url 'properties:properties-list-today' %}">Added Today</a>
+						</div>
+					{% else %}
+						<div>
+							<a href="{% url 'properties:properties-list-today' %}">Added Today</a>
+						</div>
+					{% endif %}
+					{% if prices_data != 'None' %}
+						<p class="base_text_sb display_data" style="display: block; float: right; margin-right: 30px;">Display Data</p>
+					{% endif %}
+				</div>
+				<div class="bottom_divider"></div>
+			</div>
+		{% endif %}
+		{% if '/properties/' in request.path %}
+			{% if prices_data != 'None' %}
+				<div style="position: absolute; top: 174px; left: 30px; width: calc(100% - 30px); z-index: 100;">
+					<div style="width: 40vh; height: 40vh; float: left;">
+						<canvas id="myChart" width="20" height="20" style="max-width: 300px;"></canvas>
+					</div>
+					<div style="float: left; padding-left: 30px;">
+						<div>
+							<p style="display: inline-block;margin-top: 30px;">Mean Price: </p>
+							<p style="display: inline-block;margin-top: 30px; color: #555; font-weight: 600; font-size: 22px;">{{ prices_data.mean }}</p>
+						</div>
+						<div>
+							<p style="display: inline-block; padding-top: 30px;">Median Price: </p>
+							<p style="display: inline-block; padding-top: 30px; color: #555; font-weight: 600; font-size: 22px;">{{ prices_data.median }}</p>
+						</div>
+						<div>
+							<p style="display: inline-block; padding-top: 30px;">Price Per Meter: </p>
+							<p style="display: inline-block; padding-top: 30px; color: #555; font-weight: 600; font-size: 22px;">{{ prices_data.p_per_m }}</p>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endif %}
+		<div class="properties_box" style="background-color: rgb(238, 241, 246); position: relative; z-index: 200; margin-bottom: 0px; transition: .75s; transform: translateY(0px);">
+			{% for item in object_list %}
+				{% if item.url != 'none' %}
+					<div class="property-row">
+						<div class="property-header">
+							<i class="icon-down-open"></i>
+							<div class="dividerH"></div>
+							<h3>{{ item.t_property|capfirst }} <span>in</span> {{ item.location }} - {{ item.t_sell }}</h3>
+							<h3>{{ item.price|intcomma }} PLN</h3>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+							<h3>{{ item.surface }} m&#178;</h3>
+						</div>
+						<div class="property-detail">
+							<div>
+								{% for name, value in item.get_fields %}
+									{% if value != 'None' and name != '' and value != '' and value != 'NULL' %}
+										<p class="base_text">{{ name }}: <span>{{ value }}</span></p>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+						<div class="more">
+							<div class="more_icons">
+								{% if item.url in saved_object_list %}
+									<button class="save" name="{{ item.id }}"><span data-title="Unsave"><i class="icon-bookmark"></i></span></button>
+								{% else %}
+									<button class="save" name="{{ item.id }}"><span data-title="Save"><i class="icon-bookmark-empty"></span></i></button>
+								{% endif %}
+								<button class="not_interested" name="{{ item.id }}"><span data-title="Dislike"><i class="icon-cancel"></span></i></button>
+								<a href="{{ item.url }}" target="_blank"><span data-title="Visit"><i class="icon-forward"></span></i></a>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% empty %}
+				Hmmm. It seems that We haven't found properties that satisfy your requrements
+			{% endfor %}
+		</div>
+		<div class="padding_box" style="padding: 0px"></div>
+		{% include 'properties/snippets/properties_pagination.html' %}
+	</main>
+{% endblock %}
+
+{% block js %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+	<script type="text/javascript">
+		var buttons = document.querySelectorAll("div.property-header");
+		var details = document.querySelectorAll("div.property-detail")
+		
+		for (var i = 0; i < buttons.length; i++) {
+			buttons[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				this.nextElementSibling.classList.toggle("show")
+			})
+		}
+
+		var button = document.querySelector("#filters_tab");
+		var expand = document.querySelectorAll("div.nav_expand");
+		var main = document.querySelectorAll("main.main");
+		
+		button.addEventListener("click", function() {
+			button.classList.toggle("selected");
+			expand[0].classList.toggle("expand");
+			main[0].classList.toggle("filtering");
+		})
+	</script>
+	<script type="text/javascript">
+		var save_button = document.querySelectorAll("button.save");
+		for (var i = 0; i < save_button.length; i++) {
+			save_button[i].addEventListener("click", function() {
+				if (this.querySelector("i").classList == "icon-bookmark") {
+					this.querySelector("i").classList.replace("icon-bookmark", "icon-bookmark-empty")
+				} else {
+					this.querySelector("i").classList.replace("icon-bookmark-empty", "icon-bookmark")
+				}
+			})
+		}
+		
+		not_buttons = document.querySelectorAll("button.not_interested");
+		rows = document.querySelectorAll("div.property-row");
+		for (var i = 0; i < not_buttons.length; i++) {
+			not_buttons[i].addEventListener("click", function() {
+				for(var j = 0; j < not_buttons.length; j++) {
+					if(not_buttons[j] == this) {
+						rows[j].style.display = "none"
+					}
+				}
+			})
+		}
+	</script>
+	<script type="text/javascript">
+		display_data_button = document.querySelector(".display_data");
+		properties_box = document.querySelector(".properties_box");
+		padding_box = document.querySelector(".padding_box");
+		
+		display_data_button.addEventListener("click", function() {
+			translate_value = properties_box.style.transform
+			if(translate_value == "translateY(0px)") {
+				properties_box.style.transform = "translateY(320px)"
+				padding_box.style.padding = "160px"
+			} else {
+				console.log("hi")
+				properties_box.style.transform = "translateY(0px)"
+				padding_box.style.padding = "0px"
+			}
+		})
+	</script>
+	<script type="text/javascript">
+		$('.save').click(function(){
+			$.ajax({
+				type: "POST",
+				url: "{% url 'users:save' %}",
+				data: {'id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: "json",
+			}); 
+		})
+
+		$('.not_interested').click(function(){
+		    $.ajax({
+	            type: "POST",
+		        url: "{% url 'users:not_interested' %}",
+		        data: {'id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+		        dataType: "json",
+		    }); 
+		})
+	</script>
+	
+	<script type="text/javascript">
+		var ctx = document.getElementById("myChart").getContext('2d');
+		var dataValues = "{{ prices_data.numbers_data }}".substring(1).slice(0, -1).split(', ');
+		var dataLabels = "{{ prices_data.labels }}".substring(1).slice(0, -1).replace(/&#x27;/gi, '').split(', ');
+		var myChart = new Chart(ctx, {
+		    type: 'bar',
+		    data: {
+		        labels: dataLabels,
+		        datasets: [{
+		            label: 'Prices',
+		            data: dataValues,
+		            backgroundColor: 'rgb(53, 153, 252)',
+		        }]
+		    },
+		    options: {
+		        legend: {
+		            display: false,
+		        },
+		        scales: {
+		            xAxes: [{
+		                barPercentage: 1.2,
+		                gridLines: {
+		                    display: false,
+		                },
+		                ticks: {
+		                    autoSkip: false,
+		                }
+		            }],
+		            yAxes: [{
+		                ticks: {
+		                    beginAtZero: true
+		                }
+		            }]
+		        },
+		        tooltips: {
+		            callbacks: {
+		                title: function (tooltipItem, data) {
+		                    let items_number = data['datasets'][0]['data'][tooltipItem[0]['index']];
+		                    return `Items: ${items_number}`
+		                },
+		                label: function (tooltipItem, data) {
+		                    let devidion_number = Math.round(Number(data['labels'][4] / 5));
+		                    let index = tooltipItem['index'];
+		                    let min = devidion_number * index;
+		                    let max = devidion_number * index + devidion_number;
+		                    return `${min} - ${max}`;
+		                },
+		            },
+		            backgroundColor: '#FFF',
+		            titleFontSize: 16,
+		            titleFontColor: 'rgb(43, 113, 242)',
+		            bodyFontColor: '#000',
+		            bodyFontSize: 14,
+		            displayColors: false
+		        }
+		    }
+		});
+	</script>
+{% endblock %}

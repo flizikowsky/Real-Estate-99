@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Barlow', sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'pages/landing.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo_box">For Dewelopers</div>
+            {% if user.is_authenticated %}
+                <a class="default_btn" href="{% url 'users:users-home' %}">Dashboard</a>
+            {% else %}
+                <a class="default_btn" href="{% url 'signup' %}">Get Started</a>
+            {% endif %}
+        </nav>
+        <div class="header_title">
+            <h1>A New Way to Explore Real Estate Investments</h1>
+            <p>Our Site helps you in finding new Real Estate deals. We can make it fun and educating jurney, are you ready to join?</p>
+            <div class="button_box">
+                {% if user.is_authenticated %}
+                    <a class="default_btn" href="{% url 'users:users-home' %}">Dashboard</a>
+                {% else %}
+                    <a href="{% url 'signup' %}">Register Now</a>
+                {% endif %}
+                <a href="#features_section">Learn More</a>
+            </div>
+        </div>
+        <div class="header_image"></div>
+    </header>
+    <section class="about_section">
+        <h6>About Us</h6>
+        <h2>Exploring the market doesn't need <br> to be a mystery</h2>
+        <article>
+            <div class="about_image"></div>
+            <div>
+                <h3>How did we start</h3>
+                <p>We started with an idea of using math and machine learnig in Real Estate market. Plan was simple to create a tool that can help developers in browsing the market and finding the right investment just for them. To acheave such a thing we uses machine learning algorythms to predict what you can be intrested in and show it to you. As it worked we keep developing next features like newsletter, and in future much more.</p>
+            </div>
+        </article>
+    </section>
+    <section class="card_section" id="features_section">
+        <h6>Features</h6>
+        <h2>Here are some tools that we can give you</h2>
+        <article>
+            <div style="height: 270px; width: calc((17% + 20px * 2) * 3); display: inline-block;">
+                <div class="card_box">
+                    <i>&#35;</i>
+                    <h4>Property Recomendations</h4>
+                    <p>Almost unlimited Custom picked properties that you will be intrested in, that can be your next investment.</p>
+                </div>
+                <div class="card_box">
+                    <i>&#36;</i>
+                    <h4>Daily Real Estate</h4>
+                    <p>Our Newsletter evry day sends you a list of properties that were added today and that you might be intrested in.</p>
+                </div>
+                <div class="card_box">
+                    <i>&#37;</i>
+                    <h4>Algorythms</h4>
+                    <p>This is a new feature that We are currently working on. It will help you in evry day developer job. Just wait.</p>
+                </div>
+            </div>
+        </article>
+    </section>
+    <!-- <section class="email_section">
+        <h6>Contact</h6>
+        <h2>Fell free to ask any questions you have</h2>
+        <article>
+            <div>
+                <h5>Questions?</h5>
+                <br>
+                <p>If you have any questions or just want to share your thoughts please fill the form and send us an email.</p>
+            </div>
+            <div>
+                <form action="">
+                    <div class="input_box">
+                        <input type="text" placeholder="Subject">
+                        <input type="email" placeholder="Email" style="margin-left: 15px;">
+                    </div>
+                    <div>
+                        <textarea name="" id="" cols="30" rows="10" placeholder="Body"></textarea>
+                    </div>
+                    
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </article>
+    </section> -->
+    <footer>
+        <p>Website made by Filip Dabkowski</p>
+    </footer>
+</body>
+
+</html>

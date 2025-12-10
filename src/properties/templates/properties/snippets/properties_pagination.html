@@ -1,0 +1,40 @@
+<ul class="pagination">
+	{% if object_list.has_previous %}
+	    <li>
+	    	<a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ object_list.previous_page_number }}"><i class="icon-left-small"></i></a>
+	    </li>
+	{% else %}
+	    <li class="disabled"><span><i class="icon-left-small"></i></span></li>
+	{% endif %}
+	
+	<!-- {% if object_list.number|add:'-4' > 1 %}
+	    <li>
+	    	<a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ object_list.number|add:'-5' }}">&hellip;</a>
+	    </li>
+	{% endif %} -->
+
+	{% for i in object_list.paginator.page_range %}
+	    {% if object_list.number == i %}
+	        <li class="active"><span>{{ i }}</span></li>
+	    {% elif i > object_list.number|add:'-5' and i < object_list.number|add:'5' %}
+	        <li>
+	        	<a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ i }}">{{ i }}</a>
+	        </li>
+	    {% endif %}
+	{% endfor %}
+
+	<!-- {% if object_list.paginator.num_pages > object_list.number|add:'4' %}
+	    <li>
+	    	<a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ object_list.number|add:'5' }}">&hellip;</a>
+	    </li>
+	{% endif %} -->
+
+	{% if object_list.has_next %}
+	    <li>
+			<a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ object_list.next_page_number }}"><i class="icon-right-small"></i></a>
+		</li>
+	{% else %}
+	    <li class="disabled"><span><i class="icon-right-small"></i></span></li>
+	{% endif %}
+
+</ul>

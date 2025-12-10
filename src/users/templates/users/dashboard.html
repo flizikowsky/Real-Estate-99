@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'users/dashboard.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'properties/more.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontello/css/fontello.css' %}">
+{% endblock %}
+
+{% block content %}
+	<main>
+		<header>
+			<h1>Dashboard</h1>
+		</header>
+		
+		<div>
+			<div class="today_listings">
+				<div>
+					<h2 class="base_h">Today Listings</h2>
+					<a href="{% url 'properties:properties-list-today' %}" class="see_more">See more</a>
+				</div>
+				<div>
+					{% if today_objects.count != 0 %}
+						<div class="item-header">
+							<p class="base_text_b">Location</p>
+							<p class="base_text_b">Surface</p>
+							<p class="base_text_b">Price</p>
+							<p class="base_text_b">Buy Type</p>
+						</div>
+					{% endif %}
+					<div style="height: 218px; overflow-y: scroll;">
+						{% for item in today_objects %}
+							{% if forloop.counter <= 10 %}
+								<div class="today_item">
+									<p class="base_text_sb">{{ item.t_property|capfirst }}</p>
+									<p class="base_text">{{ item.location }}</p>
+									<p class="base_text">{{ item.surface }} m&sup2;</p>
+									<p class="base_text">{{ item.price|intcomma }} PLN</p>
+									<p class="base_text">{{ item.t_sell|capfirst }}</p>
+								</div>
+							{% endif %}
+						{% empty %}
+							<p class="base_text_sb zero_info">Sorry today there was no properties added.</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			
+			<div class="block_section">
+				<h3 class="base_h">Folders</h3>
+				<div>
+					{% for box in box_list %}
+						<div class="block">
+							<a href="{% url 'users:users-saved' %}">
+								<i class="icon-bookmark-empty"></i>
+								<b>{{ box.number }}</b>
+								<p class="base_text_s">{{ box.text }}</p>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			
+			<div class="algorythms">
+				<h3 class="base_h">Real Estate Algorythms</h3>
+				<p class="base_text_sb">Algorythms simpliest way to do staff</p>
+				<div>
+					<div class="alg_box">
+						<a href="">
+							<h5>Similar</h5>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="listings_small">
+				<h3 class="base_h">Picked For You</h3>
+				<p class="refresh" style="float: right; margin-top: -30px; font-size: 13px; font-weight: 600; color: #666; transition: .75s; transform: rotate(0);"><i class="icon-arrows-cw"></i></p>
+				{% if picked_objects == '' %}
+					<div class="listing_prop_titles">
+						<p class="base_text_b">Property Type</p>
+						<p class="base_text_b">Location</p>
+						<p class="base_text_b">Price</p>
+						<p class="base_text_b">Surface</p>
+					</div>
+				{% endif %}
+				<div class="main_listings_small">
+					{% for item in picked_objects %}
+						{% if forloop.counter <= 5 %}
+							<div class="lising_row_conteiner" style="position: relative;">
+								<div class="lising_row_small">
+									<p class="base_text">{{ item.t_property|capfirst }}</p>
+									<p class="base_text">{{ item.location }}</p>
+									<p class="base_text">{{ item.surface }} m&sup2;</p>
+									<p class="base_text">{{ item.price|intcomma }} PLN</p>
+								</div>
+								<div class="more">
+									<button class="more_icon">
+										<i class="icon-ellipsis-vert"></i>
+									</button>
+									<div class="more_options">
+										<a href="{{ item.url }}" target="_blank">Visit</a>
+										{% if item.url in saved_object_list %}
+											<button class="save" name="{{ item.id }}">Unsave</button>
+										{% else %}
+											<button class="save" name="{{ item.id }}">Save</button>
+										{% endif %}
+										<button class="not_interested" name="{{ item.id }}">Dislike</button>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					{% empty %}
+						<p class="base_text_sb">Sorry there are no properties picked for you, please add some properties to favourites</p>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</main>
+{% endblock %}
+
+{% block js %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		var save_button = document.querySelectorAll("button.save");
+		for (var i = 0; i < save_button.length; i++) {
+			save_button[i].addEventListener("click", function() {
+				if(this.innerHTML == 'Save') {
+					this.innerHTML = 'Unsave'
+					var blocks = document.querySelectorAll("div.block")
+					number = blocks[0].querySelector("b")
+					number.innerHTML = parseInt(number.innerHTML) + 1
+				} else {
+					this.innerHTML = 'Save'
+					var blocks = document.querySelectorAll("div.block")
+					number = blocks[0].querySelector("b")
+					number.innerHTML = parseInt(number.innerHTML) - 1
+				}
+			})
+		}
+		
+		var not_buttons = document.querySelectorAll("button.not_interested");
+		var rows = document.querySelectorAll("div.lising_row_conteiner");
+		for (var i = 0; i < not_buttons.length; i++) {
+			not_buttons[i].addEventListener("click", function() {
+				for(var j = 0; j < not_buttons.length; j++) {
+					if(not_buttons[j] == this) {
+						rows[j].style.display = "none"
+					}
+				}
+			})
+		}
+		
+		var refresh_button = document.querySelector("p.refresh");
+		refresh_button.addEventListener("click", function() {
+			this.style.transform = "rotate(360deg)";
+			setTimeout(function() {
+				refresh_button.style.transition = "0s"
+				refresh_button.style.transform = "rotate(0)";
+				setTimeout(function() {
+					refresh_button.style.transition = ".75s"
+				}, 1)
+			}, 750)
+		})
+	</script>
+	
+	<script type="text/javascript">
+		$('.save').click(function(){
+			$.ajax({
+				type: "POST",
+				url: "{% url 'users:save' %}",
+				data: {'id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: "json",
+			}); 
+		})
+
+		$('.not_interested').click(function(){
+			$.ajax({
+				type: "POST",
+				url: "{% url 'users:not_interested' %}",
+				data: {'id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: "json",
+			}); 
+		})
+		
+		$('.refresh').click(function(){
+			$.ajax({
+				type: "POST",
+				url: "{% url 'users:refresh_picked' %}",
+				data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: "json",
+				success: function(response) {
+					console.log(response.picked_data_list)
+					updatePicked(response.picked_data_list)
+				}
+			}); 
+		})
+	</script>
+	
+	<script type="text/javascript">
+		var container = document.querySelector('.main_listings_small')
+		function updatePicked(data) {
+			listings = container.querySelectorAll('.lising_row_conteiner')
+			for(listing of listings) {
+				listing.style.display = "none"
+			}
+			
+			
+			for(object of data) {
+				container.innerHTML += `
+					<div class="lising_row_conteiner" style="position: relative;">
+						<div class="lising_row_small">
+							<p class="base_text">${object.t_property}</p>
+							<p class="base_text">${object.location}</p>
+							<p class="base_text">${object.surface} m&sup2;</p>
+							<p class="base_text">${object.price} PLN</p>
+						</div>
+						<div class="more">
+							<button class="more_icon">
+								<i class="icon-ellipsis-vert"></i>
+							</button>
+							<div class="more_options">
+								<a href="${object.url}" target="_blank">Visit</a>
+								<button class="save" name="${object.id}">Save</button>
+								<button class="not_interested" name="${object.id}">Dislike</button>
+							</div>
+						</div>
+					</div>
+				`
+			}
+		}
+	</script>
+{% endblock %}

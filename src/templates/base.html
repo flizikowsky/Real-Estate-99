@@ -1,0 +1,153 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Real Estate Alg</title>
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontello/css/fontello.css' %}">
+	<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	
+	{% block head %}
+	{% endblock %}
+	
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-family: 'Barlow', sans-serif;
+			background-color: rgb(238, 241, 246);
+			text-align: center;
+		}
+		.content {
+			width: calc(100vw - 100px);
+		}
+		
+		main {
+			width: 100%;
+			margin-left: 100px;
+			transition: .75s;
+			padding-right: 0;
+			text-align: left;
+		}
+		main > header {
+			padding: 30px 0px 30px 30px;
+			text-align: left;
+			color: #4f4f4f;
+			transition: .75s
+		}
+		main > header p {
+			font-size: 13px;
+			font-weight: 600;
+			color: #888;
+			padding-top: 5px;
+		}
+		main > div {
+			padding: 0 30px;
+		}
+		.default_btn {
+			-webkit-appearance: none;
+			display: inline-block;
+			padding: 10px 30px;
+			font-size: 12px;
+			font-weight: 600;
+			color: #fff;
+			border: none;
+			background-image: linear-gradient(to right,
+				rgb(53, 153, 252),
+				rgb(37, 86, 221)
+			);
+			border-radius: 5px;
+			box-shadow: 0px 5px 10px 2px rgba(45, 124, 241, 0.6);
+			transition: 0.3s;
+			margin-top: 10px;
+		}
+		.default_btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0px 8px 15px 1px rgba(45, 124, 241, 0.6);
+		}
+		.default_btn:active {
+			transform: translateY(2px);
+			box-shadow: 0px 3px 5px 0px rgba(45, 124, 241, 0.6);
+		}
+		
+		.base_text {
+			color: #555;
+			font-size: 14px;
+			font-weight: 400;
+		}
+		.base_text_s {
+			font-size: 12px;
+    		color: #888;
+    		font-weight: 600;
+		}
+		.base_text_sb {
+			color: #505050;
+			font-size: 14px;
+			font-weight: 600;
+		}
+		.base_text_b {
+			color: #424242;
+			font-size: 14px;
+			font-weight: 600;
+		}
+		.base_h {
+			color: #666;
+		}
+		body > header {
+			height: 15px;
+		}
+		.user_box {
+			width: 200px;
+			height: 10px;
+			float: right;
+			position: relative;
+		}
+		.user_box .more_icon {
+			height: 30px;
+			width: 30px;
+			border-radius: 50%;
+			position: absolute;
+			top: 15px;
+			right: 30px;
+			font-size: 26px;
+			color: #444;
+			box-sizing: content-box;
+			padding-bottom: 20px;
+		}
+		.user_box:hover {
+			cursor: pointer;
+		}
+		.user_box .more_icon:hover ~ .more_options {
+			transform: translate(130px, -20px);
+		}
+		.user_box .more_options {
+			margin-top: 30px;
+			transform: translate(130px, 0px);
+		}
+		.user_box .more_options:hover {
+			transform: translate(130px, -20px);
+		}
+	</style>
+</head>
+<body>
+	{% include 'snippets/side_nav.html' %}
+	<header>
+		<div class="user_box">
+			<i class="icon-user-circle-o more_icon"></i>
+			<div class="more_options"><a href="{% url 'logout' %}">Log Out</a></div>
+		</div>
+	</header>
+	<div class="content">
+		{% block content %}
+		{% endblock %}
+	</div>
+	
+	{% block js %}
+	{% endblock %}
+</body>
+</html>
