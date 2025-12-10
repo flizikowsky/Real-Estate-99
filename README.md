@@ -2,7 +2,7 @@
 
 ## RUN
 
-Create database file before anything, or just make sure it exists in `src` folder 
+Create database file before anything, or just make sure it EXISTS in `src` folder 
 ```bash
 touch src/db.sqlite3
 ```
