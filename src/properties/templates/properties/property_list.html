@@ -45,6 +45,9 @@
 							<a href="{% url 'properties:properties-list-today' %}">Added Today</a>
 						</div>
 					{% endif %}
+            <div id="map_trigger">
+							<p>Estate Map</p>
+						</div>
 					{% if prices_data != 'None' %}
 						<p class="base_text_sb display_data" style="display: block; float: right; margin-right: 30px;">Display Data</p>
 					{% endif %}
@@ -76,7 +79,10 @@
 			{% endif %}
 		{% endif %}
 		<div class="properties_box" style="background-color: rgb(238, 241, 246); position: relative; z-index: 200; margin-bottom: 0px; transition: .75s; transform: translateY(0px);">
-			{% for item in object_list %}
+			<div id="map_card" class="map-card show" style="transition: all 1s">
+          <div id="google-map"></div>
+      </div>
+      {% for item in object_list %}
 				{% if item.url != 'none' %}
 					<div class="property-row">
 						<div class="property-header">
@@ -101,10 +107,10 @@
 								{% if item.url in saved_object_list %}
 									<button class="save" name="{{ item.id }}"><span data-title="Unsave"><i class="icon-bookmark"></i></span></button>
 								{% else %}
-									<button class="save" name="{{ item.id }}"><span data-title="Save"><i class="icon-bookmark-empty"></span></i></button>
+									<button class="save" name="{{ item.id }}"><span data-title="Save"><i class="icon-bookmark-empty"></i></span></button>
 								{% endif %}
-								<button class="not_interested" name="{{ item.id }}"><span data-title="Dislike"><i class="icon-cancel"></span></i></button>
-								<a href="{{ item.url }}" target="_blank"><span data-title="Visit"><i class="icon-forward"></span></i></a>
+								<button class="not_interested" name="{{ item.id }}"><span data-title="Dislike"><i class="icon-cancel"></i></span></button>
+								<a href="{{ item.url }}" target="_blank"><span data-title="Visit"><i class="icon-forward"></i></span></a>
 							</div>
 						</div>
 					</div>
@@ -121,7 +127,40 @@
 {% block js %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-
+	<script src="{% static 'properties/map.js' %}"></script>
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfkL4Y2aeqb7UDMxKLJjsrSF2ipeLYVU0&callback=initMap"
+      async
+      defer>
+  </script>
+  
+  <script type="text/javascript">
+    let mapTriggerButton = document.getElementById('map_trigger');
+    let mapContent = document.getElementById('map_card');
+    
+    mapTriggerButton.addEventListener("click", function() {
+      this.classList.toggle("picked_option");
+      mapContent.classList.toggle("show");
+    })
+    
+    const markers = [
+        {
+            name: "Eti",
+            lat: 54.3709901642288,
+            lng: 18.613262964542365,
+            address: "Politechnika, Gabriela Narutowicza 11/12, Gdańsk",
+            locationName: "Wydział ETI"
+        },
+        {
+            name: "Zie",
+            lat: 54.37042833599099,
+            lng: 18.616578957396964,
+            address: "Traugutta 79, Gdańsk",
+            locationName: "Wydział ZIE"
+        }
+    ];
+  </script>
+  
 	<script type="text/javascript">
 		var buttons = document.querySelectorAll("div.property-header");
 		var details = document.querySelectorAll("div.property-detail")
