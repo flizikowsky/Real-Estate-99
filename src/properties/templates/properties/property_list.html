@@ -79,40 +79,43 @@
 			{% endif %}
 		{% endif %}
 		<div class="properties_box" style="background-color: rgb(238, 241, 246); position: relative; z-index: 200; margin-bottom: 0px; transition: .75s; transform: translateY(0px);">
-			<div id="map_card" class="map-card show" style="transition: all 1s">
+			<div id="map_card" class="map-card" style="transition: all 1s">
           <div id="google-map"></div>
       </div>
       {% for item in object_list %}
 				{% if item.url != 'none' %}
 					<div class="property-row">
-						<div class="property-header">
-							<i class="icon-down-open"></i>
-							<div class="dividerH"></div>
-							<h3>{{ item.t_property|capfirst }} <span>in</span> {{ item.location }} - {{ item.t_sell }}</h3>
-							<h3>{{ item.price|intcomma }} PLN</h3>
-							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-							<h3>{{ item.surface }} m&#178;</h3>
-						</div>
-						<div class="property-detail">
-							<div>
-								{% for name, value in item.get_fields %}
-									{% if value != 'None' and name != '' and value != '' and value != 'NULL' %}
-										<p class="base_text">{{ name }}: <span>{{ value }}</span></p>
-									{% endif %}
-								{% endfor %}
-							</div>
-						</div>
-						<div class="more">
-							<div class="more_icons">
-								{% if item.url in saved_object_list %}
-									<button class="save" name="{{ item.id }}"><span data-title="Unsave"><i class="icon-bookmark"></i></span></button>
-								{% else %}
-									<button class="save" name="{{ item.id }}"><span data-title="Save"><i class="icon-bookmark-empty"></i></span></button>
-								{% endif %}
-								<button class="not_interested" name="{{ item.id }}"><span data-title="Dislike"><i class="icon-cancel"></i></span></button>
-								<a href="{{ item.url }}" target="_blank"><span data-title="Visit"><i class="icon-forward"></i></span></a>
-							</div>
-						</div>
+            <div class="property-photo-left" aria-hidden="true"></div>
+            <div class="property-content">
+              <div class="property-header">
+                <i class="icon-down-open"></i>
+                <div class="dividerH"></div>
+                <h3>{{ item.t_property|capfirst }} <span>in</span> {{ item.location }} - {{ item.t_sell }}</h3>
+                <h3>{{ item.price|intcomma }} PLN</h3>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <h3>{{ item.surface }} m&#178;</h3>
+              </div>
+              <div class="property-detail">
+                <div>
+                  {% for name, value in item.get_fields %}
+                    {% if value != 'None' and name != '' and value != '' and value != 'NULL' %}
+                      <p class="base_text">{{ name }}: <span>{{ value }}</span></p>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="more">
+                <div class="more_icons">
+                  {% if item.url in saved_object_list %}
+                    <button class="save" name="{{ item.id }}"><span data-title="Unsave"><i class="icon-bookmark"></i></span></button>
+                  {% else %}
+                    <button class="save" name="{{ item.id }}"><span data-title="Save"><i class="icon-bookmark-empty"></i></span></button>
+                  {% endif %}
+                  <button class="not_interested" name="{{ item.id }}"><span data-title="Dislike"><i class="icon-cancel"></i></span></button>
+                  <a href="{{ item.url }}" target="_blank"><span data-title="Visit"><i class="icon-forward"></i></span></a>
+                </div>
+              </div>
+            </div>
 					</div>
 				{% endif %}
 			{% empty %}
@@ -142,23 +145,10 @@
       this.classList.toggle("picked_option");
       mapContent.classList.toggle("show");
     })
-    
-    const markers = [
-        {
-            name: "Eti",
-            lat: 54.3709901642288,
-            lng: 18.613262964542365,
-            address: "Politechnika, Gabriela Narutowicza 11/12, Gdańsk",
-            locationName: "Wydział ETI"
-        },
-        {
-            name: "Zie",
-            lat: 54.37042833599099,
-            lng: 18.616578957396964,
-            address: "Traugutta 79, Gdańsk",
-            locationName: "Wydział ZIE"
-        }
-    ];
+
+    let markers = "{{ map_data }}"
+    markers = markers.replaceAll("&quot;", '"');
+    markers = eval(markers);
   </script>
   
 	<script type="text/javascript">

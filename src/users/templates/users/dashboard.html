@@ -17,8 +17,8 @@
 		<div>
 			<div class="today_listings">
 				<div>
-					<h2 class="base_h">Today Listings</h2>
-					<a href="{% url 'properties:properties-list-today' %}" class="see_more">See more</a>
+					<h2 class="base_h">Your Listings</h2>
+					<a href="{% url 'properties:properties-create' %}" class="see_more">Add more</a>
 				</div>
 				<div>
 					{% if today_objects.count != 0 %}

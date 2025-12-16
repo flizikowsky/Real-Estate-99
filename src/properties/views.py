@@ -1,4 +1,6 @@
-from django.shortcuts import render
+import json
+
+from django.shortcuts import redirect, render
 from django.views import View
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth.decorators import login_required
@@ -15,7 +17,7 @@ from datetime import datetime, timedelta
 from numpy import sum
 
 
-PROPERTIES_PER_PAGE = 50
+PROPERTIES_PER_PAGE = 5
 
 @login_required(login_url='login')
 def property_list_view(request):
@@ -64,6 +66,14 @@ def property_list_view(request):
 		property_list = properties_paginator.page(1)
 	except page <= 0:
 		property_list = properties_paginator.page(1)
+		
+	map_data = [{
+		"name": f"{p.t_property} - {p.t_sell} in {p.location}",
+		"address": p.location,
+		"locationName": f"{p.t_property} - {p.t_sell} in {p.location}",
+		"lat": p.longitude,
+		"lng": p.latitude
+	} for p in property_list]
 	
 	context = {
 		'title': 'Property List',
@@ -76,9 +86,36 @@ def property_list_view(request):
 		't_properties': ['dom', 'mieszkanie', 'dzialka'],
 		't_sells': ['wynajem', 'sprzedaz'],
 		'prices_data': prices_data,
+		'map_data': json.dumps(map_data),
 	}
 	
 	return render(request, 'properties/property_list.html', context)
+
+
+@login_required(login_url='login')
+def property_create_view(request):
+	if request.method == 'POST':
+		location = request.POST.get('location')
+		price = request.POST.get('price')
+		surface = request.POST.get('surface')
+		type_estate = request.POST.get('type_estate')
+		type_sell = request.POST.get('type_sell')
+		print(request.POST)
+		print(location)
+		new_estate = Property.objects.create(
+			url='http://127.0.0.1:8000',
+			location=location,
+			price=price,
+			surface=surface,
+			t_property=type_estate,
+			t_sell=type_sell,
+			date_added=datetime.now().strftime('%Y-%m-%d'),
+			date_created=datetime.now().strftime('%Y-%m-%d'),
+		)
+		return redirect('users:users-home')
+	
+	return render(request, 'properties/property_create.html', {})
+
 
 def filter_properties(request):
 
