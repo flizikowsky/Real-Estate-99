@@ -5,10 +5,40 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'properties/properties.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'properties/more.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'fontello/css/fontello.css' %}">
+  
+  <style>
+  .popup_preview {
+    {#display: none;#}
+    visibility: hidden;
+   
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+  }
+  .popup_preview.show {
+    display: flex;
+    visibility: visible;
+  }
+  .popup_content {
+    width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px 80px;
+  }
+  
+  </style>
 {% endblock %}
 
 {% block content %}
-<main class="main" style="position: relative;">
+<main class="main">
 		<header>
 			<h1>New Listing</h1>
 		</header>
@@ -23,24 +53,24 @@
         {% csrf_token %}
       
         <div class="form_item">
-          <label for="location">Location:</label><br>
-          <input type="text" id="location" name="location" value="" placeholder="Location of your Estate">
+          <label>Location:</label><br>
+          <input type="text" id="create_location" name="location"placeholder="Location of your Estate">
         </div>
         
         <div class="form_item">
           <label class="small">Price:</label><br>
-          <input type="number" id="price" class="my_input" name="price" value="" min="0" placeholder="Input Price">
+          <input type="number" id="create_price" class="my_input" name="price" min="0" placeholder="Input Price">
         </div>
         
         <div class="form_item">
           <label class="small">Surface:</label><br>
-          <input type="number" id="surface" class="my_input" name="surface" value="" min="0" placeholder="Input Surface">
+          <input type="number" id="create_surface" class="my_input" name="surface" min="0" placeholder="Input Surface">
         </div>
         
         <div class="form_item">
           <label>Property Type:</label><br>
           
-          <select name="type_estate">
+          <select name="type_estate" id="create_type_estate">
             <option value="flat">flat</option>
             <option value="house">house</option>
           </select>
@@ -48,19 +78,60 @@
         
         <div class="form_item">
           <label>Sell Type:</label><br>
-          <select name="type_sell">
+          <select name="type_sell" id="create_type_sell">
             <option value="buy">buy</option>
             <option value="rent">rent</option>
           </select>
         </div>
         
         <button type="submit" class="default_btn" style="float: right;">Add New</button>
+        <div type="" id="preview_button" style="float: right; display: inline-block; padding: 10px 30px; font-size: 12px; font-weight: bold; background-color: #f6f6f6; border: 1px solid rgb(2, 139, 210); border-radius: 5px; margin-top: 10px; box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.1); margin-right: 10px; color: #000000">Show Preview</div>
       </form>
-      
     </div>
 </main>
+  
+<div class="popup_preview" id="popup_preview">
+  <div class="popup_content">
+    <h1 style="color: #666666; text-align: left; margin-bottom: 20px">Preview</h1>
+    <div class="property-row">
+      <div class="property-photo-left" aria-hidden="true"></div>
+      <div class="property-content">
+        <div class="property-header">
+          <i class="icon-down-open"></i>
+          <div class="dividerH"></div>
+          <h3 id="preview-description">HOUSE <span>in</span> GDYNIA - BUY</h3>
+          <h3 id="preview-price">123 PLN</h3>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <h3 id="preview-surface">12 m&#178;</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}
+  <script>
+  let preview_button = document.getElementById("preview_button");
+  let popup_element = document.getElementById("popup_preview")
   
+  preview_button.addEventListener("click", function () {
+    popup_element.classList.toggle("show");
+    let location_info = document.getElementById("create_location").value;
+    let price_info = document.getElementById("create_price").value;
+    let surface_info = document.getElementById("create_surface").value;
+    let type_estate_info = document.getElementById("create_type_estate").value;
+    let type_sell_info = document.getElementById("create_type_sell").value;
+    
+    console.log(location_info)
+    
+    document.getElementById("preview-description").innerHTML = `${type_estate_info} <span>in</span> ${location_info} - ${type_sell_info}`
+    document.getElementById("preview-price").innerHTML = `${price_info} PLN`
+    document.getElementById("preview-surface").innerHTML = `${surface_info} m&#178;`
+  })
+  popup_element.addEventListener("click", function () {
+    popup_element.classList.toggle("show");
+  })
+  
+  </script>
 {% endblock %}
