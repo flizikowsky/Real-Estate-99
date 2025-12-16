@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'properties/properties.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'properties/more.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontello/css/fontello.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main" style="position: relative;">
+		<header>
+			<h1>New Listing</h1>
+		</header>
+
+    <div class="form_main" style="display: flex">
+      <div class="image_upload_box" style="width: 30%; padding: 20px">
+        <div class="img_box" style="width: 100%; height: 200px; border-radius: 4px; background-color: #c6c9d0; text-align: center; line-height: 4;">
+          <span data-title="Unsave"><i class="icon-th-large" style="color: #ffffff; font-size: 50px;"></i></span>
+        </div>
+      </div>
+      <form method="POST" class="filter_form" style="width: 70%">
+        {% csrf_token %}
+      
+        <div class="form_item">
+          <label for="location">Location:</label><br>
+          <input type="text" id="location" name="location" value="" placeholder="Location of your Estate">
+        </div>
+        
+        <div class="form_item">
+          <label class="small">Price:</label><br>
+          <input type="number" id="price" class="my_input" name="price" value="" min="0" placeholder="Input Price">
+        </div>
+        
+        <div class="form_item">
+          <label class="small">Surface:</label><br>
+          <input type="number" id="surface" class="my_input" name="surface" value="" min="0" placeholder="Input Surface">
+        </div>
+        
+        <div class="form_item">
+          <label>Property Type:</label><br>
+          
+          <select name="type_estate">
+            <option value="flat">flat</option>
+            <option value="house">house</option>
+          </select>
+        </div>
+        
+        <div class="form_item">
+          <label>Sell Type:</label><br>
+          <select name="type_sell">
+            <option value="buy">buy</option>
+            <option value="rent">rent</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="default_btn" style="float: right;">Add New</button>
+      </form>
+      
+    </div>
+</main>
+{% endblock %}
+
+{% block js %}
+  
+{% endblock %}
