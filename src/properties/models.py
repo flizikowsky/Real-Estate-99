@@ -19,7 +19,9 @@ class Property(models.Model):
 	p_condition = models.CharField(max_length=45, null=True, blank=True)
 	build_year = models.IntegerField(null=True, blank=True)
 	market = models.CharField(max_length=45, null=True, blank=True)
-	
+	longitude = models.FloatField(null=True, blank=True)
+	latitude = models.FloatField(null=True, blank=True)
+
 	date_added = models.DateField(null=True)
 	date_created = models.DateField(null=True)
 	
@@ -49,6 +51,8 @@ class Property(models.Model):
 			'p_condition': 'wykończenie',
 			'build_year': 'rok budowy',
 			'market': 'rynek',
+			'longitude': 'longitude',
+			'latitude': 'latitude',
 			'date_added': '',
 			'date_created': ''
 		}
